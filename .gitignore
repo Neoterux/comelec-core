@@ -4,6 +4,8 @@
 /public/hot
 /public/storage
 /storage/*.key
+/storage/*.pem
+*.log
 /vendor
 .env
 .env.backup
@@ -17,3 +19,12 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
+!/.vscode/.gitignore
+/tools/php-cs-fixer/vendor
+# Generated sources
+_ide_helper_models.php
+_ide_helper.php
+.phpstorm.meta.php
+.php-cs-fixer.cache
+.eslintcache

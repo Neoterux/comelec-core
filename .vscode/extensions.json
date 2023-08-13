@@ -1,0 +1,13 @@
+{
+    "recommendations": [
+        "DEVSENSE.phptools-vscode",
+        "junstyle.php-cs-fixer",
+        "mikestead.dotenv",
+        "EditorConfig.EditorConfig",
+        "christian-kohler.path-intellisense"
+    ],
+    "unwantedRecommendations": [
+        "bmewburn.vscode-intelephense-client",
+        "zobo.php-intellisense"
+    ]
+}
