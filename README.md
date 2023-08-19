@@ -7,6 +7,7 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
@@ -20,6 +21,28 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 - [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
+
+
+## Setup Dev Environment
+
+### Installing dependencies
+
+```sh
+cp .env.example .env
+composer install
+php artisan jwt:secret
+# if dont have generated the .PEM files:
+php artisan jwt:generate-certs
+
+# if not database has been configured
+php artisan migrate
+```
+
+### Starting up development server
+```sh
+php artisan serve [--host=<your_ip>] [--port=[port]]
+```
+
 
 ## Learning Laravel
 
