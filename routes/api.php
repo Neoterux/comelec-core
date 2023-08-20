@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ShoppingCartController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,7 +34,7 @@ Route::group([
     'middleware' => 'api',
     'prefix' => 'auth',
 ], function() {
-    Route::post('login', [AuthController::class, 'login']);
+    Route::post('login', [AuthController::class, 'login'])->name('login');
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('register', [AuthController::class, 'register'])->name('register');
     Route::get('me', [AuthController::class, 'me'])->name('me');
@@ -41,5 +42,8 @@ Route::group([
 });
 
 Route::middleware('auth:api')->group(function () {
-
+    Route::group(['prefix' => 'shopping-cart', 'name' => 'shopping_cart'], function () {
+        Route::get('', [ShoppingCartController::class, 'index'])->name('index');
+        Route::put('{id}', [ShoppingCartController::class, 'update'])->name('update_cart');
+    });
 });

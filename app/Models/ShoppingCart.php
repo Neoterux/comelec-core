@@ -36,12 +36,17 @@ class ShoppingCart extends Model
         'user_id',
     ];
 
+    protected $casts = [
+        'updated_at' => 'datetime:Y-m-d H:i:s',
+        'created_at' => 'datetime:Y-m-d H:i:s',
+    ];
+
 
     public function user() {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function content() {
-        return $this->hasMany(ShoppingCartDetails::class);
+        return $this->hasMany(ShoppingCartDetails::class, 'cart_id', 'cart_id');
     }
 }
