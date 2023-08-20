@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ShoppingCart;
+use App\Models\User;
+use DB;
+use Hash;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -26,7 +30,38 @@ class AuthController extends Controller
 
 
     public function register(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'username' => 'required|string|min:5',
+            'password' => 'required|string|min:8',
+            'password_confirm' => 'required|string|min:8'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->getMessageBag()->first()
+            ], 422);
+        }
+        $data = $validator->validated();
+        try {
+            DB::beginTransaction();
+            $user = User::create([
+                'username' => $data['username'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password'])
+            ]);
 
+            ShoppingCart::create([
+                'user_id' => $user->getKey(),
+            ]);
+            DB::commit();
+        } catch (\Throwable $t) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'No se pudo registrar al usuario',
+                (env('APP_ENV') == 'local' ? 'err' : '') => $t->getMessage()
+            ], 400);
+        }
     }
 
     public function me() {
