@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 /*
  |------------------------------------------------------------------------
@@ -29,11 +29,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
  | or JWT.
  |
  */
-Route::prefix('auth')->group(function () {
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth',
+], function() {
     Route::post('login', [AuthController::class, 'login']);
-    Route::post('logout', [AuthController::class, 'logout']);
-    Route::post('register', [AuthController::class, 'register']);
-    Route::get('me', [AuthController::class, 'me']);
+    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+    Route::post('register', [AuthController::class, 'register'])->name('register');
+    Route::get('me', [AuthController::class, 'me'])->name('me');
+
 });
 
 Route::middleware('auth:api')->group(function () {

@@ -14,7 +14,7 @@ class AuthController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
     public function login() {
@@ -33,7 +33,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'email' => 'required|email',
-            'username' => 'required|string|min:5',
+            'username' => 'required|string|min:2',
             'password' => 'required|string|min:8',
             'password_confirm' => 'required|string|min:8'
         ]);
@@ -46,6 +46,7 @@ class AuthController extends Controller
         try {
             DB::beginTransaction();
             $user = User::create([
+                'name' => $data['name'],
                 'username' => $data['username'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password'])
@@ -55,6 +56,9 @@ class AuthController extends Controller
                 'user_id' => $user->getKey(),
             ]);
             DB::commit();
+            return response()->json([
+                'message' => 'Registrado correctamente'
+            ], 201);
         } catch (\Throwable $t) {
             DB::rollBack();
             return response()->json([
