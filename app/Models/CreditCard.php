@@ -16,4 +16,22 @@ use Illuminate\Database\Eloquent\Model;
 class CreditCard extends Model
 {
     use HasFactory;
+
+    protected $table = 'credit_card';
+    protected $primaryKey = 'card_id';
+
+
+    protected $fillable = [
+        'user_id',
+        'number',
+        'nickname',
+        'expiration_date',
+        'ccv',
+        'active',
+    ];
+
+
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }
