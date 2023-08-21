@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ShoppingCartController;
 use App\Http\Controllers\CreditCardController;
+use App\Http\Controllers\ItemController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -54,5 +55,13 @@ Route::middleware('auth:api')->group(function () {
         Route::get('', [CreditCardController::class, 'index'])->name('index');
         Route::post('', [CreditCardController::class, 'store'])->name('store_card');
         Route::delete('{id}', [CreditCardController::class, 'destroy'])->name('destroy_card');
+    });
+});
+
+Route::middleware('auth:api')->group(function () {
+    Route::group(['prefix' => 'item', 'name' => 'item'], function () {
+        Route::get('', [ItemController::class, 'index'])->name('index');
+        Route::post('', [ItemController::class, 'store'])->name('store_item');
+        Route::delete('{id}', [ItemController::class, 'destroy'])->name('destroy_item');
     });
 });

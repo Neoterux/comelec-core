@@ -46,5 +46,7 @@ class Item extends Model
         'unit_price',
         'unit',
         'active',
+        'created_at',
+        'updated_at',
     ];
 }
