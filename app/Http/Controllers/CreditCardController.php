@@ -17,7 +17,7 @@ class CreditCardController extends Controller
      */
     public function index()
     {
-        return CreditCard::whereUserId(auth()->id())
+        return CreditCard::whereUserId(1)
             ->get();
     }
 
@@ -39,12 +39,11 @@ class CreditCardController extends Controller
             ], 422);
         }
         $data = $validator->validated();
-        $user = User::whereId(auth()->id())->first();
 
         try {
             DB::beginTransaction();
             CreditCard::create([
-                'user_id' => $user->getKey(),
+                'user_id' => 1,
                 'number' => $data['number'],
                 'nickname' => $data['nickname'],
                 'expiration_date' => $data['expiration_date'],
