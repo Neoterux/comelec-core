@@ -56,6 +56,8 @@ Route::group(['prefix' => 'credit-card', 'name' => 'credit_card'], function () {
 
 Route::group(['prefix' => 'item', 'name' => 'item'], function () {
     Route::get('', [ItemController::class, 'index'])->name('index');
+    Route::get('{id}', [ItemController::class, 'index'])->name('index_item');
+    Route::put('{id}', [ItemController::class, 'update'])->name('update_item');
     Route::post('', [ItemController::class, 'store'])->name('store_item');
     Route::delete('{id}', [ItemController::class, 'destroy'])->name('destroy_item');
 });

@@ -32,11 +32,13 @@ class ItemController extends Controller
             'unit' => 'required|int|min:0',
             'active' => 'required|int',
         ]);
+
         if ($validator->fails()) {
             return response()->json([
                 'message' => $validator->getMessageBag()->first()
             ], 422);
         }
+
         $data = $validator->validated();
 
         try {
@@ -77,7 +79,51 @@ class ItemController extends Controller
      */
     public function update(Request $request, string $id)
     {
-       
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'shortname' => 'required|string',
+            'description' => 'required|string',
+            'unit_price' => 'required|int',
+            'unit' => 'required|int|min:0',
+            'active' => 'required|int',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->getMessageBag()->first()
+            ], 422);
+        }
+        
+        $data = $validator->validated();
+        
+        try {
+            DB::beginTransaction();
+
+            $item = DB::table('items')
+                ->where('item_id', $id)
+                ->update([
+                    'name' => $data['name'],
+                    'shortname' => $data['shortname'],
+                    'description' => $data['description'],
+                    'unit_price' => $data['unit_price'],
+                    'unit' => $data['unit'],
+                    'active' => $data['active']
+                ]);
+
+            DB::commit();
+
+            return response()->json([
+                'err' => $item,
+               
+                'message' => 'Actualizado correctamente'
+            ]);
+        } catch(\Throwable $th) {
+            Log::error($th);
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Error al actualizar el item'
+            ], 400);
+        }
 
     }
 
